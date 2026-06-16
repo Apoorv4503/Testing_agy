@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigQuery Release Notes Tracker & Tweet Tool</title>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/google-cloud.png">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <img src="https://img.icons8.com/color/48/google-cloud.png" alt="Google Cloud Logo" width="36" height="36">
+            <div>
+                <h1>BigQuery Release Notes</h1>
+                <div class="subtitle">Stay updated with Google BigQuery feed & Tweet updates</div>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="refresh-btn" class="btn btn-primary">
+                <span class="spinner" id="btn-spinner"></span>
+                <span class="btn-text" id="btn-label">Refresh Feed</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main>
+        <!-- Dashboard / Filter Bar -->
+        <section class="dashboard-bar">
+            <div class="stats-group">
+                <div class="stat-item">Total Items: <span class="stat-val" id="total-count">0</span></div>
+                <div class="stat-item">Features: <span class="stat-val" id="feature-count">0</span></div>
+                <div class="stat-item">Issues: <span class="stat-val" id="issue-count">0</span></div>
+            </div>
+            <div class="filter-group">
+                <input type="text" id="search-input" class="search-input" placeholder="Search updates...">
+                <select id="type-filter" class="filter-select">
+                    <option value="all">All Types</option>
+                    <option value="feature">Features</option>
+                    <option value="issue">Issues</option>
+                    <option value="deprecation">Deprecations</option>
+                    <option value="update">Other Updates</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <div id="loading-state" class="state-container" style="display: none;">
+            <div class="spinner" style="display: block; width: 40px; height: 40px; border-width: 4px; border-top-color: var(--primary-light);"></div>
+            <div>
+                <div class="state-title">Fetching Release Notes</div>
+                <div class="state-desc">Connecting to Google Cloud RSS feed and parsing the latest updates...</div>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="state-container" style="display: none;">
+            <div class="state-icon">⚠️</div>
+            <div>
+                <div class="state-title">Unable to Load Feed</div>
+                <div class="state-desc" id="error-message">An error occurred while trying to fetch the feed content. Please check your connection and try again.</div>
+            </div>
+            <button id="retry-btn" class="btn btn-secondary">Try Again</button>
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="state-container" style="display: none;">
+            <div class="state-icon">🔍</div>
+            <div>
+                <div class="state-title">No Updates Found</div>
+                <div class="state-desc">We couldn't find any release notes matching your filters. Try adjusting your search query or dropdown selections.</div>
+            </div>
+        </div>
+
+        <!-- Release Notes Feed -->
+        <div id="feed-content" class="feed-container">
+            <!-- Dynamic content injected here by app.js -->
+        </div>
+    </main>
+
+    <!-- Twitter Composer Modal -->
+    <div id="tweet-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title">Share to Twitter / X</div>
+                <button id="close-modal" class="close-btn">&times;</button>
+            </div>
+            
+            <textarea id="tweet-textarea" class="composer-textarea" placeholder="What's happening?"></textarea>
+            
+            <div class="composer-footer">
+                <div class="char-counter-container">
+                    <svg class="circular-progress">
+                        <circle class="bg-circle" cx="15" cy="15" r="12"></circle>
+                        <circle id="progress-circle" class="progress-circle" cx="15" cy="15" r="12"></circle>
+                    </svg>
+                    <span id="char-count" class="char-count-text">280</span>
+                </div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <button id="cancel-tweet-btn" class="btn btn-secondary">Cancel</button>
+                    <button id="share-tweet-btn" class="btn btn-primary" style="background-color: #1d9bf0; box-shadow: 0 4px 14px rgba(29, 155, 240, 0.3);">
+                        <span>Post</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>BigQuery Release Notes Tracker &copy; 2026. Made using Python Flask, HTML, CSS, &amp; JavaScript. Feed URL: <a href="https://docs.cloud.google.com/feeds/bigquery-release-notes.xml" target="_blank">Google Cloud Feed XML</a></p>
+    </footer>
+
+    <!-- App Logic -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
